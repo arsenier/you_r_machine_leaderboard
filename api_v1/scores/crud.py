@@ -27,6 +27,13 @@ async def get_top10(session: AsyncSession) -> list[Score]:
     return list(scores)
 
 
+async def get_top(session: AsyncSession, limit: int) -> list[Score]:
+    stmt = select(Score).order_by(-Score.score).limit(limit)
+    result: Result = await session.execute(stmt)
+    scores = result.scalars().all()
+    return list(scores)
+
+
 async def get_score(session: AsyncSession, score_id: int) -> Score | None:
     return await session.get(Score, score_id)
 

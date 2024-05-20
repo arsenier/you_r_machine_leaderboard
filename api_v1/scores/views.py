@@ -23,6 +23,14 @@ async def get_top10(
     return await crud.get_top10(session=session)
 
 
+@router.get("/top/{limit}/", response_model=list[ScoreSchema])
+async def get_top10(
+    limit: int,
+    session: AsyncSession = Depends(db_helper.scoped_session_dependency),
+):
+    return await crud.get_top(session=session, limit=limit)
+
+
 @router.post(
     "/",
     response_model=ScoreSchema,
